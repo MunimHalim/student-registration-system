@@ -1,0 +1,667 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Student Registration System - Demo</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            min-height: 100vh;
+            padding: 20px;
+        }
+
+        .container {
+            max-width: 700px;
+            margin: 0 auto;
+            background: white;
+            border-radius: 15px;
+            box-shadow: 0 20px 40px rgba(0,0,0,0.1);
+            overflow: hidden;
+        }
+
+        .header {
+            background: linear-gradient(135deg, #2196F3, #1976D2);
+            color: white;
+            padding: 30px;
+            text-align: center;
+        }
+
+        .header h1 {
+            font-size: 26px;
+            margin-bottom: 8px;
+        }
+
+        .header p {
+            opacity: 0.9;
+            font-size: 15px;
+        }
+
+        .form-container {
+            padding: 40px;
+        }
+
+        .form-section {
+            margin-bottom: 35px;
+        }
+
+        .section-title {
+            font-size: 18px;
+            font-weight: 600;
+            color: #333;
+            margin-bottom: 20px;
+            padding-bottom: 8px;
+            border-bottom: 2px solid #e1e1e1;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+
+        .form-group {
+            margin-bottom: 20px;
+        }
+
+        label {
+            display: block;
+            margin-bottom: 8px;
+            font-weight: 600;
+            color: #333;
+            font-size: 14px;
+        }
+
+        .required {
+            color: #e74c3c;
+        }
+
+        input, select, textarea {
+            width: 100%;
+            padding: 12px 15px;
+            border: 2px solid #e1e1e1;
+            border-radius: 8px;
+            font-size: 16px;
+            transition: all 0.3s ease;
+            background: #fafafa;
+        }
+
+        input:focus, select:focus, textarea:focus {
+            outline: none;
+            border-color: #2196F3;
+            background: white;
+            box-shadow: 0 0 0 3px rgba(33, 150, 243, 0.1);
+        }
+
+        textarea {
+            resize: vertical;
+            min-height: 80px;
+        }
+
+        .row {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 20px;
+        }
+
+        .row-three {
+            display: grid;
+            grid-template-columns: 1fr 1fr 1fr;
+            gap: 15px;
+        }
+
+        .checkbox-group {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 15px;
+            margin-top: 10px;
+        }
+
+        .checkbox-item {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+
+        .checkbox-item input[type="checkbox"] {
+            width: auto;
+            margin: 0;
+        }
+
+        .submit-btn {
+            width: 100%;
+            padding: 15px;
+            background: linear-gradient(135deg, #2196F3, #1976D2);
+            color: white;
+            border: none;
+            border-radius: 8px;
+            font-size: 16px;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            margin-top: 20px;
+        }
+
+        .submit-btn:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 5px 15px rgba(33, 150, 243, 0.3);
+        }
+
+        .submit-btn:active {
+            transform: translateY(0);
+        }
+
+        .data-table {
+            margin-top: 30px;
+            padding: 25px;
+            background: #f8f9fa;
+            border-radius: 8px;
+        }
+
+        .data-table h3 {
+            margin-bottom: 15px;
+            color: #333;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            background: white;
+            border-radius: 8px;
+            overflow: hidden;
+            box-shadow: 0 2px 8px rgba(0,0,0,0.1);
+        }
+
+        th, td {
+            padding: 12px;
+            text-align: left;
+            border-bottom: 1px solid #eee;
+        }
+
+        th {
+            background: #2196F3;
+            color: white;
+            font-weight: 600;
+            font-size: 14px;
+        }
+
+        td {
+            font-size: 13px;
+        }
+
+        tr:hover {
+            background: #f5f5f5;
+        }
+
+        .status-badge {
+            padding: 4px 8px;
+            border-radius: 12px;
+            font-size: 11px;
+            font-weight: 600;
+        }
+
+        .status-enrolled { background: #d4edda; color: #155724; }
+        .status-pending { background: #fff3cd; color: #856404; }
+        .status-withdrawn { background: #f8d7da; color: #721c24; }
+
+        .year-badge {
+            padding: 3px 8px;
+            border-radius: 10px;
+            font-size: 11px;
+            font-weight: 600;
+            background: #e3f2fd;
+            color: #1565c0;
+        }
+
+        @media (max-width: 768px) {
+            .row, .row-three {
+                grid-template-columns: 1fr;
+            }
+            
+            .container {
+                margin: 10px;
+                border-radius: 10px;
+            }
+            
+            body {
+                padding: 10px;
+            }
+
+            .form-container {
+                padding: 25px;
+            }
+
+            .checkbox-group {
+                flex-direction: column;
+                gap: 10px;
+            }
+        }
+
+        .info-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            gap: 15px;
+            margin-top: 15px;
+        }
+
+        .info-card {
+            background: #f0f8ff;
+            padding: 15px;
+            border-radius: 8px;
+            border-left: 4px solid #2196F3;
+        }
+
+        .info-card h4 {
+            color: #1976D2;
+            margin-bottom: 5px;
+            font-size: 14px;
+        }
+
+        .info-card p {
+            color: #666;
+            font-size: 24px;
+            font-weight: 600;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <div class="header">
+            <h1>🎓 University Student Registration</h1>
+            <p>Student Information Management System</p>
+        </div>
+
+        <div class="form-container">
+            <form id="studentForm">
+                <!-- Personal Information -->
+                <div class="form-section">
+                    <h3 class="section-title">👤 Personal Information</h3>
+                    
+                    <div class="row">
+                        <div class="form-group">
+                            <label for="firstName">First Name <span class="required">*</span></label>
+                            <input type="text" id="firstName" name="firstName" required>
+                        </div>
+                        <div class="form-group">
+                            <label for="lastName">Last Name <span class="required">*</span></label>
+                            <input type="text" id="lastName" name="lastName" required>
+                        </div>
+                    </div>
+
+                    <div class="row">
+                        <div class="form-group">
+                            <label for="studentId">Student ID <span class="required">*</span></label>
+                            <input type="text" id="studentId" name="studentId" placeholder="e.g., STU2025001" required>
+                        </div>
+                        <div class="form-group">
+                            <label for="email">Email Address <span class="required">*</span></label>
+                            <input type="email" id="email" name="email" placeholder="student@university.edu" required>
+                        </div>
+                    </div>
+
+                    <div class="row">
+                        <div class="form-group">
+                            <label for="phone">Phone Number</label>
+                            <input type="tel" id="phone" name="phone" placeholder="+60 12-345 6789">
+                        </div>
+                        <div class="form-group">
+                            <label for="dateOfBirth">Date of Birth <span class="required">*</span></label>
+                            <input type="date" id="dateOfBirth" name="dateOfBirth" required>
+                        </div>
+                    </div>
+
+                    <div class="form-group">
+                        <label for="address">Home Address</label>
+                        <textarea id="address" name="address" placeholder="Enter complete address..."></textarea>
+                    </div>
+                </div>
+
+                <!-- Academic Information -->
+                <div class="form-section">
+                    <h3 class="section-title">📚 Academic Information</h3>
+                    
+                    <div class="row">
+                        <div class="form-group">
+                            <label for="program">Study Program <span class="required">*</span></label>
+                            <select id="program" name="program" required>
+                                <option value="">Select program...</option>
+                                <option value="Computer Science">Bachelor of Computer Science</option>
+                                <option value="Business Administration">Bachelor of Business Administration</option>
+                                <option value="Engineering">Bachelor of Engineering</option>
+                                <option value="Medicine">Bachelor of Medicine</option>
+                                <option value="Law">Bachelor of Law</option>
+                                <option value="Arts">Bachelor of Arts</option>
+                                <option value="Science">Bachelor of Science</option>
+                            </select>
+                        </div>
+                        <div class="form-group">
+                            <label for="faculty">Faculty <span class="required">*</span></label>
+                            <select id="faculty" name="faculty" required>
+                                <option value="">Select faculty...</option>
+                                <option value="Engineering">Faculty of Engineering</option>
+                                <option value="Medicine">Faculty of Medicine</option>
+                                <option value="Business">Faculty of Business</option>
+                                <option value="Science">Faculty of Science</option>
+                                <option value="Arts">Faculty of Arts</option>
+                                <option value="Law">Faculty of Law</option>
+                            </select>
+                        </div>
+                    </div>
+
+                    <div class="row-three">
+                        <div class="form-group">
+                            <label for="year">Year of Study <span class="required">*</span></label>
+                            <select id="year" name="year" required>
+                                <option value="">Select year...</option>
+                                <option value="1">Year 1</option>
+                                <option value="2">Year 2</option>
+                                <option value="3">Year 3</option>
+                                <option value="4">Year 4</option>
+                                <option value="5">Year 5</option>
+                            </select>
+                        </div>
+                        <div class="form-group">
+                            <label for="semester">Current Semester <span class="required">*</span></label>
+                            <select id="semester" name="semester" required>
+                                <option value="">Select semester...</option>
+                                <option value="1">Semester 1</option>
+                                <option value="2">Semester 2</option>
+                                <option value="3">Semester 3 (Summer)</option>
+                            </select>
+                        </div>
+                        <div class="form-group">
+                            <label for="gpa">Current GPA</label>
+                            <input type="number" id="gpa" name="gpa" step="0.01" min="0" max="4.0" placeholder="0.00">
+                        </div>
+                    </div>
+
+                    <div class="row">
+                        <div class="form-group">
+                            <label for="advisor">Academic Advisor</label>
+                            <input type="text" id="advisor" name="advisor" placeholder="Dr. John Smith">
+                        </div>
+                        <div class="form-group">
+                            <label for="enrollmentStatus">Enrollment Status <span class="required">*</span></label>
+                            <select id="enrollmentStatus" name="enrollmentStatus" required>
+                                <option value="">Select status...</option>
+                                <option value="Enrolled">Full-time Enrolled</option>
+                                <option value="Part-time">Part-time Enrolled</option>
+                                <option value="Pending">Enrollment Pending</option>
+                                <option value="Withdrawn">Withdrawn</option>
+                                <option value="Graduated">Graduated</option>
+                            </select>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Additional Information -->
+                <div class="form-section">
+                    <h3 class="section-title">ℹ️ Additional Information</h3>
+                    
+                    <div class="form-group">
+                        <label>Extracurricular Activities</label>
+                        <div class="checkbox-group">
+                            <div class="checkbox-item">
+                                <input type="checkbox" id="sports" name="activities" value="Sports">
+                                <label for="sports">Sports & Athletics</label>
+                            </div>
+                            <div class="checkbox-item">
+                                <input type="checkbox" id="debate" name="activities" value="Debate">
+                                <label for="debate">Debate Club</label>
+                            </div>
+                            <div class="checkbox-item">
+                                <input type="checkbox" id="music" name="activities" value="Music">
+                                <label for="music">Music & Arts</label>
+                            </div>
+                            <div class="checkbox-item">
+                                <input type="checkbox" id="volunteer" name="activities" value="Volunteer">
+                                <label for="volunteer">Volunteer Work</label>
+                            </div>
+                            <div class="checkbox-item">
+                                <input type="checkbox" id="student-govt" name="activities" value="Student Government">
+                                <label for="student-govt">Student Government</label>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="form-group">
+                        <label for="notes">Additional Notes</label>
+                        <textarea id="notes" name="notes" placeholder="Any special considerations, medical conditions, or additional information..."></textarea>
+                    </div>
+                </div>
+
+                <button type="submit" class="submit-btn">Register Student</button>
+            </form>
+
+            <!-- Statistics Dashboard -->
+            <div class="info-grid">
+                <div class="info-card">
+                    <h4>Total Students</h4>
+                    <p id="totalStudents">0</p>
+                </div>
+                <div class="info-card">
+                    <h4>Enrolled</h4>
+                    <p id="enrolledCount">0</p>
+                </div>
+                <div class="info-card">
+                    <h4>Pending</h4>
+                    <p id="pendingCount">0</p>
+                </div>
+            </div>
+
+            <div class="data-table">
+                <h3>📋 Student Records</h3>
+                <table id="dataTable">
+                    <thead>
+                        <tr>
+                            <th>Student ID</th>
+                            <th>Name</th>
+                            <th>Program</th>
+                            <th>Year</th>
+                            <th>GPA</th>
+                            <th>Status</th>
+                        </tr>
+                    </thead>
+                    <tbody id="tableBody">
+                        <!-- Sample data -->
+                        <tr>
+                            <td>STU2025001</td>
+                            <td>Sarah Johnson</td>
+                            <td>Computer Science</td>
+                            <td><span class="year-badge">Year 3</span></td>
+                            <td>3.85</td>
+                            <td><span class="status-badge status-enrolled">Enrolled</span></td>
+                        </tr>
+                        <tr>
+                            <td>STU2025002</td>
+                            <td>Michael Chen</td>
+                            <td>Business Administration</td>
+                            <td><span class="year-badge">Year 2</span></td>
+                            <td>3.42</td>
+                            <td><span class="status-badge status-enrolled">Enrolled</span></td>
+                        </tr>
+                        <tr>
+                            <td>STU2025003</td>
+                            <td>Emma Rodriguez</td>
+                            <td>Engineering</td>
+                            <td><span class="year-badge">Year 1</span></td>
+                            <td>--</td>
+                            <td><span class="status-badge status-pending">Pending</span></td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        // Mock student data storage (simulates Google Sheets backend)
+        let studentData = [
+            {
+                studentId: 'STU2025001',
+                firstName: 'Sarah',
+                lastName: 'Johnson',
+                email: 'sarah.johnson@university.edu',
+                program: 'Computer Science',
+                faculty: 'Engineering',
+                year: '3',
+                semester: '1',
+                gpa: '3.85',
+                enrollmentStatus: 'Enrolled',
+                activities: ['Sports', 'Volunteer'],
+                advisor: 'Dr. Smith'
+            },
+            {
+                studentId: 'STU2025002',
+                firstName: 'Michael',
+                lastName: 'Chen',
+                email: 'michael.chen@university.edu',
+                program: 'Business Administration',
+                faculty: 'Business',
+                year: '2',
+                semester: '2',
+                gpa: '3.42',
+                enrollmentStatus: 'Enrolled',
+                activities: ['Debate', 'Student Government'],
+                advisor: 'Prof. Lee'
+            },
+            {
+                studentId: 'STU2025003',
+                firstName: 'Emma',
+                lastName: 'Rodriguez',
+                email: 'emma.rodriguez@university.edu',
+                program: 'Engineering',
+                faculty: 'Engineering',
+                year: '1',
+                semester: '1',
+                gpa: '',
+                enrollmentStatus: 'Pending',
+                activities: ['Music'],
+                advisor: 'Dr. Wilson'
+            }
+        ];
+
+        // Handle form submission
+        document.getElementById('studentForm').addEventListener('submit', function(e) {
+            e.preventDefault();
+            
+            // Get form data
+            const formData = new FormData(this);
+            
+            // Get selected activities
+            const selectedActivities = [];
+            document.querySelectorAll('input[name="activities"]:checked').forEach(checkbox => {
+                selectedActivities.push(checkbox.value);
+            });
+            
+            const newStudent = {
+                studentId: formData.get('studentId'),
+                firstName: formData.get('firstName'),
+                lastName: formData.get('lastName'),
+                email: formData.get('email'),
+                phone: formData.get('phone'),
+                dateOfBirth: formData.get('dateOfBirth'),
+                address: formData.get('address'),
+                program: formData.get('program'),
+                faculty: formData.get('faculty'),
+                year: formData.get('year'),
+                semester: formData.get('semester'),
+                gpa: formData.get('gpa'),
+                advisor: formData.get('advisor'),
+                enrollmentStatus: formData.get('enrollmentStatus'),
+                activities: selectedActivities,
+                notes: formData.get('notes')
+            };
+
+            // Check for duplicate student ID
+            if (studentData.some(student => student.studentId === newStudent.studentId)) {
+                alert('Student ID already exists! Please use a unique ID.');
+                return;
+            }
+
+            // Add to data array (simulates writing to Google Sheets)
+            studentData.unshift(newStudent);
+            
+            // Update table and statistics
+            updateTable();
+            updateStatistics();
+            
+            // Reset form
+            this.reset();
+            
+            // Show success message
+            showSuccessMessage();
+        });
+
+        function updateTable() {
+            const tbody = document.getElementById('tableBody');
+            tbody.innerHTML = '';
+            
+            studentData.slice(0, 15).forEach(student => {
+                const row = tbody.insertRow();
+                const statusClass = student.enrollmentStatus.toLowerCase().replace(' ', '-').replace('-time', '');
+                const gpaDisplay = student.gpa || '--';
+                
+                row.innerHTML = `
+                    <td>${student.studentId}</td>
+                    <td>${student.firstName} ${student.lastName}</td>
+                    <td>${student.program}</td>
+                    <td><span class="year-badge">Year ${student.year}</span></td>
+                    <td>${gpaDisplay}</td>
+                    <td><span class="status-badge status-${statusClass}">${student.enrollmentStatus}</span></td>
+                `;
+            });
+        }
+
+        function updateStatistics() {
+            const total = studentData.length;
+            const enrolled = studentData.filter(s => s.enrollmentStatus === 'Enrolled' || s.enrollmentStatus === 'Part-time').length;
+            const pending = studentData.filter(s => s.enrollmentStatus === 'Pending').length;
+            
+            document.getElementById('totalStudents').textContent = total;
+            document.getElementById('enrolledCount').textContent = enrolled;
+            document.getElementById('pendingCount').textContent = pending;
+        }
+
+        function showSuccessMessage() {
+            const button = document.querySelector('.submit-btn');
+            const originalText = button.textContent;
+            button.textContent = '✅ Student Registered Successfully!';
+            button.style.background = '#28a745';
+            
+            setTimeout(() => {
+                button.textContent = originalText;
+                button.style.background = 'linear-gradient(135deg, #2196F3, #1976D2)';
+            }, 3000);
+        }
+
+        // Auto-generate student ID
+        function generateStudentId() {
+            const year = new Date().getFullYear();
+            const nextNumber = String(studentData.length + 4).padStart(3, '0');
+            return `STU${year}${nextNumber}`;
+        }
+
+        // Set default student ID
+        document.getElementById('studentId').value = generateStudentId();
+
+        // Update student ID when form is reset
+        document.getElementById('studentForm').addEventListener('reset', function() {
+            setTimeout(() => {
+                document.getElementById('studentId').value = generateStudentId();
+            }, 100);
+        });
+
+        // Initialize
+        updateTable();
+        updateStatistics();
+    </script>
+</body>
+</html>
